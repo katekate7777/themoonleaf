@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Moonleaf • Dreamy Watercolor Greeting Cards</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&amp;family=Instrument+Sans:wght@300;400;500&amp;display=swap');
+
+    body {
+      font-family: 'Instrument Sans', system_ui, -apple-system, sans-serif;
+      background: #05070f;
+      color: #e0f2fe;
+    }
+
+    .heading-serif {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-feature-settings: "liga", "kern";
+    }
+
+    .nav-glass {
+      background: rgba(5, 7, 15, 0.85);
+      backdrop-filter: blur(20px);
+    }
+
+    .section-header {
+      font-family: 'Playfair Display', Georgia, serif;
+      letter-spacing: -0.6px;
+    }
+
+    .product-card {
+      transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+      background: #0a0f1a;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.2), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+      border-color: rgba(103, 232, 249, 0.3);
+    }
+
+    .watercolor-preview {
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    
+    .product-card:hover .watercolor-preview {
+      transform: scale(1.03);
+    }
+
+    .filter-pill {
+      transition: all 0.2s ease;
+    }
+    
+    .filter-pill.active {
+      background-color: #67e8f9;
+      color: #05070f;
+      border-color: #67e8f9;
+    }
+
+    .greeting-modal {
+      animation: modal-enter 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    @keyframes modal-enter {
+      from { opacity: 0; transform: translateY(12px) scale(0.985); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Hero */
+    .hero {
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    .hero-vignette {
+      background: radial-gradient(
+        ellipse at center,
+        transparent 15%,
+        rgba(5, 7, 15, 0.6) 45%,
+        rgba(2, 3, 8, 0.8) 70%
+      );
+    }
+
+    .hero-title {
+      font-size: clamp(3.8rem, 9.5vw, 7.5rem);
+      line-height: 0.88;
+      font-weight: 700;
+      letter-spacing: -4.2px;
+      color: #f0f4ff;
+      text-shadow: 
+        0 0 20px rgba(255, 215, 0, 0.7),
+        0 0 40px rgba(255, 215, 0, 0.4),
+        0 0 10px rgba(103, 232, 249, 0.35),
+        0 4px 15px rgba(0, 0, 0, 0.95),
+        0 8px 32px rgba(0, 0, 0, 0.7);
+    }
+
+    .hero-subtitle {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.2rem, 3vw, 1.85rem);
+      line-height: 1.3;
+      color: #e0f2fe;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85), 0 4px 18px rgba(0, 0, 0, 0.6);
+    }
+
+    .outline-btn {
+      border: 1.5px solid #67e8f9;
+      color: #67e8f9;
+      font-weight: 500;
+      transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    
+    .outline-btn:hover {
+      background-color: #67e8f9;
+      color: #05070f;
+      border-color: #67e8f9;
+      transform: translateY(-2px);
+      box-shadow: 0 0 15px rgba(103, 232, 249, 0.4);
+    }
+
+    /* Subtle floating particles */
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(224, 242, 254, 0.55);
+      box-shadow: 0 0 5px rgba(103, 232, 249, 0.7);
+      pointer-events: none;
+      animation: float-up linear infinite;
+    }
+
+    @keyframes float-up {
+      0% { transform: translateY(0); opacity: 0.65; }
+      100% { transform: translateY(-140px); opacity: 0; }
+    }
+
+    /* Gentle leaf breathing animation overlay */
+    .leaf-breath {
+      animation: breath 7.5s ease-in-out infinite;
+      filter: drop-shadow(0 0 12px rgba(103, 232, 249, 0.5));
+    }
+
+    @keyframes breath {
+      0%, 100% { transform: scale(1) rotate(-1deg); }
+      50% { transform: scale(1.012) rotate(1deg); }
+    }
+
+    .gentle-leaf {
+      position: absolute;
+      opacity: 0.2;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav-glass sticky top-0 z-50 border-b border-white/10">
+    <div class="max-w-screen-2xl mx-auto px-8">
+      <div class="flex items-center justify-between h-20">
+        <!-- Logo -->
+        <div class="flex items-center gap-x-3">
+          <div class="w-9 h-9 rounded-full overflow-hidden ring-1 ring-white/20">
+            <img src="assets/hero-bg.jpg" alt="The Moonleaf" class="w-full h-full object-cover">
+          </div>
+          <div class="font-semibold tracking-tight text-2xl leading-none heading-serif text-white">The Moonleaf</div>
+        </div>
+
+        <!-- Desktop Navigation -->
+        <div class="hidden md:flex items-center gap-x-9 text-sm font-medium text-white/70">
+          <a href="#shop" class="hover:text-white transition-colors">Shop</a>
+          <a href="#collections" class="hover:text-white transition-colors">Collections</a>
+          <a href="#studio" class="hover:text-white transition-colors">The Studio</a>
+          <a href="#journal" class="hover:text-white transition-colors">Journal</a>
+        </div>
+
+        <!-- Right side actions -->
+        <div class="flex items-center gap-x-2">
+          <div class="hidden sm:block relative w-64">
+            <input 
+              type="text" 
+              id="search-input"
+              placeholder="Search cards..." 
+              class="w-full bg-white/5 border border-white/20 focus:border-[#67e8f9] text-white text-sm pl-10 py-2.5 rounded-3xl outline-none placeholder:text-white/40">
+            <i class="fa-solid fa-search absolute left-4 top-3.5 text-white/40"></i>
+          </div>
+
+          <button onclick="showWishlist()" 
+                  class="relative flex h-11 w-11 items-center justify-center rounded-2xl hover:bg-white/10 transition-colors text-white">
+            <i class="fa-solid fa-heart text-lg"></i>
+            <span id="wishlist-count" class="absolute -top-0.5 -right-0.5 text-[9px] font-mono bg-[#67e8f9] text-[#05070f] min-w-[15px] h-[15px] flex items-center justify-center rounded-full px-1">0</span>
+          </button>
+
+          <button onclick="showCart()" 
+                  class="relative flex h-11 w-11 items-center justify-center rounded-2xl hover:bg-white/10 transition-colors text-white">
+            <i class="fa-solid fa-shopping-bag text-lg"></i>
+            <span id="cart-count" class="absolute -top-0.5 -right-0.5 bg-[#67e8f9] text-[#05070f] text-[9px] font-mono min-w-[15px] h-[15px] flex items-center justify-center rounded-full px-1">0</span>
+          </button>
+
+          <button id="mobile-menu-btn" class="md:hidden flex h-11 w-11 items-center justify-center text-white">
+            <i class="fa-solid fa-bars text-xl"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="mobile-menu" class="hidden md:hidden border-t border-white/10 bg-[#05070f] px-8 py-6 text-sm font-medium text-white/70">
+      <div class="flex flex-col gap-y-1">
+        <a href="#shop" class="mobile-link py-[11px] hover:text-white">Shop</a>
+        <a href="#collections" class="mobile-link py-[11px] hover:text-white">Collections</a>
+        <a href="#studio" class="mobile-link py-[11px] hover:text-white">The Studio</a>
+        <a href="#journal" class="mobile-link py-[11px] hover:text-white">Journal</a>
+        <div class="pt-3 mt-2 border-t border-white/10">
+          <button onclick="showCart()" class="w-full py-3 bg-[#67e8f9] text-[#05070f] rounded-3xl text-sm font-medium flex items-center justify-center gap-x-2">
+            <i class="fa-solid fa-shopping-bag"></i>
+            <span>View Cart</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO exactly like the uploaded image: full-screen background, same composition, mysterious dreamy lighting -->
+  <!-- HERO - restored to previous beautiful version -->
+  <header class="hero relative min-h-screen flex items-center justify-center overflow-hidden" style="background-image: url('assets/hero-bg.jpg');">
+    <!-- Vignette for depth -->
+    <div class="absolute inset-0 hero-vignette"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-black/15 via-transparent to-black/25"></div>
+
+    <!-- Very subtle floating particles -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none z-10">
+      <div class="particle" style="width: 2px; height: 2px; left: 15%; top: 48%; animation-duration: 18s;"></div>
+      <div class="particle" style="width: 1.5px; height: 1.5px; left: 29%; top: 65%; animation-duration: 22s; animation-delay: -4s;"></div>
+      <div class="particle" style="width: 2.5px; height: 2.5px; left: 48%; top: 25%; animation-duration: 16s; animation-delay: -9s;"></div>
+      <div class="particle" style="width: 2px; height: 2px; left: 68%; top: 52%; animation-duration: 20s; animation-delay: -2s;"></div>
+      <div class="particle" style="width: 1.8px; height: 1.8px; left: 82%; top: 38%; animation-duration: 25s; animation-delay: -13s;"></div>
+    </div>
+
+    <!-- Gentle leaf breathing/glow overlay -->
+    <div class="absolute z-10 pointer-events-none" style="top: 18%; left: 30%; width: 290px; height: 330px; opacity: 0.85;">
+      <svg class="leaf-breath w-full h-full" viewBox="0 0 56 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M28 6C28 6 14 18 12 35C10 52 20 60 28 54C36 60 46 52 44 35C42 18 28 6 28 6Z" fill="#67e8f9"/>
+        <path d="M28 11C28 11 19 21 18 32" stroke="#a5f3fc" stroke-width="1.8" opacity="0.55"/>
+      </svg>
+    </div>
+
+    <!-- Content - restored to previous positioning -->
+    <div class="relative z-20 text-center px-6 max-w-4xl mx-auto" style="margin-top: 18vh;">
+      <h1 class="hero-title heading-serif text-[#e0f2fe]">
+        The Moonleaf
+      </h1>
+      
+      <p class="hero-subtitle mt-4 text-[#e0f2fe] max-w-md mx-auto">
+        stories folded into paper,<br>waiting to be opened
+      </p>
+
+      <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <button onclick="document.getElementById('shop').scrollIntoView({ behavior: 'smooth' })" 
+                class="outline-btn px-8 py-3 text-[15px] rounded-3xl font-medium flex items-center gap-x-2">
+          Shop the Collection
+        </button>
+        
+        <button onclick="document.getElementById('studio').scrollIntoView({ behavior: 'smooth' })" 
+                class="outline-btn px-8 py-3 text-[15px] rounded-3xl font-medium flex items-center gap-x-2">
+          Meet the Studio
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Shop Section -->
+  <section id="shop" class="max-w-screen-2xl mx-auto px-8 pt-16 pb-12">
+    <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-8 gap-y-3">
+      <div>
+        <div class="uppercase text-xs tracking-[2.5px] text-[#67e8f9] font-medium">PRINTABLE DIGITAL CARDS</div>
+        <h2 class="section-header text-6xl tracking-tighter">The Collection</h2>
+      </div>
+      <div class="text-[#94a3b8] max-w-sm text-sm">
+        Each card is lovingly painted in watercolor and designed to bring a moment of peace to the person who receives it.
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="flex flex-wrap items-center gap-x-2 gap-y-2 mb-8" id="filter-tabs">
+      <button onclick="filterCards('all', this)" class="filter-pill active px-5 py-[7px] text-sm rounded-3xl border border-[#67e8f9] bg-[#67e8f9] text-[#05070f]">All Cards</button>
+      <button onclick="filterCards('birthday', this)" class="filter-pill px-5 py-[7px] text-sm rounded-3xl border border-white/30 hover:border-[#67e8f9]">Birthday</button>
+      <button onclick="filterCards('wedding', this)" class="filter-pill px-5 py-[7px] text-sm rounded-3xl border border-white/30 hover:border-[#67e8f9]">Wedding</button>
+      <button onclick="filterCards('thankyou', this)" class="filter-pill px-5 py-[7px] text-sm rounded-3xl border border-white/30 hover:border-[#67e8f9]">Thank You</button>
+      <button onclick="filterCards('holiday', this)" class="filter-pill px-5 py-[7px] text-sm rounded-3xl border border-white/30 hover:border-[#67e8f9]">Holiday</button>
+      <button onclick="filterCards('healing', this)" class="filter-pill px-5 py-[7px] text-sm rounded-3xl border border-white/30 hover:border-[#67e8f9]">Healing</button>
+      <button onclick="filterCards('blank', this)" class="filter-pill px-5 py-[7px] text-sm rounded-3xl border border-white/30 hover:border-[#67e8f9]">Blank</button>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6" id="products-grid">
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="max-w-screen-2xl mx-auto px-8 py-16 border-t border-white/10">
+    <div class="text-center mb-10">
+      <div class="uppercase tracking-[2px] text-xs text-[#67e8f9]">THREE GENTLE STEPS</div>
+      <h3 class="section-header text-4xl mt-2 tracking-tight">How It Works</h3>
+    </div>
+    
+    <div class="grid md:grid-cols-3 gap-7 max-w-5xl mx-auto">
+      <div class="bg-white/5 border border-white/10 rounded-3xl p-8 text-center">
+        <div class="mx-auto w-12 h-12 rounded-full bg-white/10 flex items-center justify-center mb-5">
+          <i class="fa-solid fa-search text-[#67e8f9] text-2xl"></i>
+        </div>
+        <div class="font-semibold text-xl">1. Choose your card</div>
+        <p class="mt-3 text-sm text-[#94a3b8]">Browse our dreamy watercolor collection and select the message that feels right.</p>
+      </div>
+      <div class="bg-white/5 border border-white/10 rounded-3xl p-8 text-center">
+        <div class="mx-auto w-12 h-12 rounded-full bg-white/10 flex items-center justify-center mb-5">
+          <i class="fa-solid fa-download text-[#67e8f9] text-2xl"></i>
+        </div>
+        <div class="font-semibold text-xl">2. Download instantly</div>
+        <p class="mt-3 text-sm text-[#94a3b8]">Your high-resolution files are ready immediately after purchase. No waiting.</p>
+      </div>
+      <div class="bg-white/5 border border-white/10 rounded-3xl p-8 text-center">
+        <div class="mx-auto w-12 h-12 rounded-full bg-white/10 flex items-center justify-center mb-5">
+          <i class="fa-solid fa-print text-[#67e8f9] text-2xl"></i>
+        </div>
+        <div class="font-semibold text-xl">3. Print with love</div>
+        <p class="mt-3 text-sm text-[#94a3b8]">Print at home, a local print shop, or through an online service. 300 dpi quality.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Studio -->
+  <section id="studio" class="max-w-screen-2xl mx-auto px-8 py-16 border-t border-white/10">
+    <div class="grid lg:grid-cols-2 gap-x-14 gap-y-12 items-center">
+      <div>
+        <div class="uppercase tracking-widest text-xs text-[#67e8f9]">OUR STORY</div>
+        <h2 class="section-header text-5xl tracking-[-1.4px] mt-3 leading-none">Slow art for<br>meaningful moments.</h2>
+        
+        <div class="mt-7 max-w-prose text-[#94a3b8] leading-relaxed">
+          The Moonleaf was born from a love of quiet rituals, hand-painted beauty, and the healing power of sending a real card in the mail.
+        </div>
+        
+        <div class="mt-6 text-sm text-[#94a3b8]">
+          Every design begins with real watercolor on paper, then is carefully digitized so you can print it beautifully at any size. We believe in intentional living, moon cycles, and the small gestures that matter most.
+        </div>
+
+        <div class="flex items-center gap-x-3 mt-8">
+          <div class="px-4 py-1.5 bg-white/5 text-xs tracking-wider rounded-3xl border border-white/10">SUSTAINABLY PRINTED AT HOME</div>
+          <div class="px-4 py-1.5 bg-white/5 text-xs tracking-wider rounded-3xl border border-white/10">SUPPORTS SLOW LIVING</div>
+        </div>
+      </div>
+
+      <div class="bg-white/5 border border-white/10 rounded-3xl p-9 text-sm leading-relaxed">
+        <p class="italic">"In a world of instant messages, there is something sacred about choosing a card, writing by hand, and sending a little piece of beauty into someone’s day."</p>
+        <div class="mt-6 text-xs font-medium tracking-wider text-[#67e8f9]">— ELENA MOON, FOUNDER</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="max-w-screen-2xl mx-auto px-8 py-16 border-t border-white/10">
+    <div class="text-center mb-10">
+      <div class="uppercase text-xs tracking-[2px] text-[#67e8f9]">KIND WORDS</div>
+      <h3 class="section-header text-4xl mt-1 tracking-tight">Loved by those who send with heart</h3>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-white/5 border border-white/10 rounded-3xl p-7">
+        <div class="flex gap-x-1 text-[#67e8f9] mb-4">
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+        </div>
+        <p class="text-sm">"The most beautiful thank you card I’ve ever sent. My friend cried when she opened it. The watercolor is so delicate and peaceful."</p>
+        <div class="mt-6 text-xs font-medium">— Maya R., Portland</div>
+      </div>
+      <div class="bg-white/5 border border-white/10 rounded-3xl p-7">
+        <div class="flex gap-x-1 text-[#67e8f9] mb-4">
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+        </div>
+        <p class="text-sm">"I bought the ‘Eternal Bloom’ wedding card for my sister. Everyone at the shower asked where I got it. I’m now obsessed and have ordered more for the holidays."</p>
+        <div class="mt-6 text-xs font-medium">— Clara &amp; James, Asheville</div>
+      </div>
+      <div class="bg-white/5 border border-white/10 rounded-3xl p-7">
+        <div class="flex gap-x-1 text-[#67e8f9] mb-4">
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+        </div>
+        <p class="text-sm">"The ‘You Are Enough’ card helped me through a really hard season. I keep one framed by my desk now. These cards feel like little hugs."</p>
+        <div class="mt-6 text-xs font-medium">— Sam T., Vancouver</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter -->
+  <section id="journal" class="max-w-screen-2xl mx-auto px-8 py-14">
+    <div class="max-w-xl mx-auto text-center">
+      <div class="uppercase tracking-[2px] text-xs text-[#67e8f9]">THE MOONLEAF JOURNAL</div>
+      <h4 class="section-header text-4xl mt-2">A little beauty in your inbox.</h4>
+      <p class="mt-3 text-sm text-[#94a3b8]">Monthly notes on slow living, new watercolor releases, and seasonal rituals. No spam, ever.</p>
+      
+      <form onsubmit="handleNewsletter(event)" class="mt-6 flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+        <input type="email" id="newsletter-email" placeholder="Your email address" required
+               class="flex-1 border border-white/20 bg-white/5 px-5 h-12 rounded-3xl text-sm focus:outline-none focus:border-[#67e8f9] placeholder:text-white/40">
+        <button type="submit"
+                class="sm:w-auto px-10 h-12 font-semibold bg-[#67e8f9] hover:bg-[#a5f3fc] text-[#05070f] rounded-3xl text-sm transition-colors">
+          SUBSCRIBE
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/10 bg-[#05070f]">
+    <div class="max-w-screen-2xl mx-auto px-8 py-12 text-xs flex flex-col md:flex-row justify-between gap-y-4 text-[#94a3b8]">
+      <div>© The Moonleaf. All rights reserved. Handcrafted with magic.</div>
+      <div class="flex gap-x-5">
+        <a href="#" class="hover:text-white">Our Story</a>
+        <a href="#" class="hover:text-white">Wholesale</a>
+        <a href="#" class="hover:text-white">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Product Detail Modal -->
+  <div id="product-modal" onclick="if (event.target.id === 'product-modal') hideProductModal()" class="hidden fixed inset-0 bg-black/80 z-[80] flex items-center justify-center p-5">
+    <div onclick="event.stopImmediatePropagation()" class="greeting-modal bg-[#05070f] w-full max-w-[860px] rounded-3xl overflow-hidden shadow-xl border border-white/10">
+      <div class="grid md:grid-cols-2">
+        <div id="modal-preview" class="watercolor-preview h-[320px] md:h-full min-h-[280px] flex items-center justify-center relative">
+        </div>
+
+        <div class="p-8 md:p-9 flex flex-col text-white">
+          <div class="flex justify-between items-start">
+            <div>
+              <div id="modal-category" class="text-xs tracking-[1.5px] text-[#67e8f9] font-medium"></div>
+              <div id="modal-name" class="text-4xl leading-none heading-serif tracking-[-1px] mt-1.5"></div>
+            </div>
+            <button onclick="hideProductModal()" class="text-3xl leading-none text-white/60 hover:text-white">×</button>
+          </div>
+
+          <div id="modal-price" class="mt-4 font-semibold text-2xl text-[#67e8f9]"></div>
+
+          <div id="modal-description" class="mt-6 text-sm leading-relaxed text-[#94a3b8]"></div>
+
+          <div class="mt-6 pt-6 border-t border-white/10">
+            <div class="text-xs uppercase tracking-wider text-[#67e8f9]">INCLUDES</div>
+            <ul class="mt-3 text-sm space-y-1 text-[#94a3b8]">
+              <li class="flex items-center gap-x-2"><i class="fa-solid fa-check text-[#67e8f9] w-3"></i> High-resolution 300 dpi PDF (5×7", 8×10", A2)</li>
+              <li class="flex items-center gap-x-2"><i class="fa-solid fa-check text-[#67e8f9] w-3"></i> Matching envelope template</li>
+              <li class="flex items-center gap-x-2"><i class="fa-solid fa-check text-[#67e8f9] w-3"></i> Printing guide + tips</li>
+            </ul>
+          </div>
+
+          <div class="flex-1"></div>
+
+          <div class="flex gap-x-3 mt-8">
+            <button onclick="addCurrentToCart()" class="flex-1 h-12 rounded-3xl bg-[#67e8f9] hover:bg-[#a5f3fc] text-[#05070f] font-medium text-sm flex items-center justify-center gap-x-2 transition">ADD TO CART</button>
+            <button onclick="toggleWishlistFromModal()" class="h-12 w-12 border border-white/30 hover:bg-white/10 rounded-3xl flex items-center justify-center text-[#67e8f9]"><i class="fa-solid fa-heart" id="modal-heart"></i></button>
+          </div>
+
+          <div class="text-center text-[10px] text-white/50 mt-4">Instant download after purchase</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Drawer -->
+  <div id="cart-drawer" onclick="if (event.target.id === 'cart-drawer') hideCart()" class="hidden fixed inset-0 bg-black/80 z-[90]">
+    <div onclick="event.stopImmediatePropagation()" class="absolute right-0 top-0 bottom-0 w-full max-w-md bg-[#05070f] shadow-2xl flex flex-col border-l border-white/10">
+      <div class="p-6 flex items-center justify-between border-b border-white/10">
+        <div class="font-semibold text-xl heading-serif">Your Cart</div>
+        <button onclick="hideCart()" class="text-3xl leading-none text-white/60 hover:text-white">×</button>
+      </div>
+
+      <div id="cart-items" class="flex-1 overflow-auto p-6 space-y-5 text-sm text-[#94a3b8]"></div>
+
+      <div class="p-6 border-t border-white/10 bg-black/30">
+        <div class="flex justify-between items-baseline text-lg font-medium text-white">
+          <div>Total</div>
+          <div id="cart-total">$0</div>
+        </div>
+        <button onclick="checkout()" class="mt-5 w-full h-12 bg-[#67e8f9] hover:bg-[#a5f3fc] text-[#05070f] rounded-3xl font-medium text-sm tracking-wider">CHECKOUT — SECURE CHECKOUT</button>
+        <div class="text-center text-[10px] text-white/50 mt-2">Digital files delivered instantly via email</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wishlist Modal -->
+  <div id="wishlist-modal" onclick="if (event.target.id === 'wishlist-modal') hideWishlist()" class="hidden fixed inset-0 bg-black/80 z-[90] flex items-center justify-center p-5">
+    <div onclick="event.stopImmediatePropagation()" class="bg-[#05070f] w-full max-w-md rounded-3xl overflow-hidden border border-white/10">
+      <div class="p-6 flex justify-between items-center border-b border-white/10">
+        <div class="font-semibold text-xl heading-serif">Wishlist</div>
+        <button onclick="hideWishlist()" class="text-xl text-white/60 hover:text-white">×</button>
+      </div>
+      <div id="wishlist-items" class="p-6 text-sm min-h-[180px] text-[#94a3b8]"></div>
+    </div>
+  </div>
+
+  <script>
+    const products = [
+      { id: 1, name: "Moonlit Birthday", category: "birthday", price: 9, desc: "A dreamy celebration under soft moonlight. Delicate ferns and a glowing crescent moon frame a heartfelt birthday wish.", colors: ["#0f766e", "#67e8f9"], previewText: "Happy Birthday under the Moon" },
+      { id: 2, name: "Wild Fern Wishes", category: "birthday", price: 8, desc: "Lush green ferns and tiny wildflowers dance across this joyful birthday card. Perfect for nature lovers and wild hearts.", colors: ["#0f766e", "#67e8f9"], previewText: "Wishing you a beautiful year" },
+      { id: 3, name: "Eternal Bloom", category: "wedding", price: 12, desc: "A romantic watercolor of wildflowers in full bloom. Ideal for weddings, anniversaries, or anyone celebrating lasting love.", colors: ["#67e8f9", "#0f766e"], previewText: "With love, always" },
+      { id: 4, name: "Whispered Vows", category: "wedding", price: 11, desc: "Soft lavender and sage leaves surround two elegant rings. A tender and timeless design for the most meaningful day.", colors: ["#67e8f9", "#0f766e"], previewText: "To love & to cherish" },
+      { id: 5, name: "Gentle Thanks", category: "thankyou", price: 7, desc: "A quiet, graceful thank you. Soft periwinkle petals and a single silver leaf create a moment of sincere gratitude.", colors: ["#0f766e", "#67e8f9"], previewText: "Thank you, from the heart" },
+      { id: 6, name: "Heart of Gold", category: "thankyou", price: 8, desc: "Warm golden tones and flowing leaves. Express deep appreciation with this glowing, healing design.", colors: ["#67e8f9", "#0f766e"], previewText: "With deepest gratitude" },
+      { id: 7, name: "Winter Solstice", category: "holiday", price: 10, desc: "A peaceful winter scene with a full moon, evergreen branches, and soft falling snow. A beautiful card for the season.", colors: ["#0f766e", "#67e8f9"], previewText: "Peace in the quiet season" },
+      { id: 8, name: "Harvest Moon", category: "holiday", price: 9, desc: "Rich autumn leaves in soft golds and sage. A warm and grounding card for Thanksgiving or cozy fall gatherings.", colors: ["#67e8f9", "#0f766e"], previewText: "Grateful for you" },
+      { id: 9, name: "You Are Enough", category: "healing", price: 8, desc: "A tender message of self-compassion. Soft blue and lavender with a delicate crescent moon and leaves. Healing in card form.", colors: ["#0f766e", "#67e8f9"], previewText: "You are enough, exactly as you are" },
+      { id: 10, name: "Quiet Strength", category: "healing", price: 9, desc: "A powerful yet soft reminder. Dark moss greens and gentle moonlight for those who need encouragement and resilience.", colors: ["#67e8f9", "#0f766e"], previewText: "You are stronger than you know" },
+      { id: 11, name: "Soft Light", category: "blank", price: 7, desc: "A serene blank card featuring a glowing moon and floating leaves. Perfect for your own handwritten messages.", colors: ["#0f766e", "#67e8f9"], previewText: "" },
+      { id: 12, name: "New Moon", category: "blank", price: 7, desc: "A fresh beginning. Minimal and elegant watercolor of a new moon surrounded by delicate botanical details.", colors: ["#67e8f9", "#0f766e"], previewText: "" }
+    ]
+
+    let cart = []
+    let wishlist = []
+
+    function getCategoryLabel(cat) {
+      const map = { birthday: "BIRTHDAY", wedding: "WEDDING", thankyou: "THANK YOU", holiday: "HOLIDAY", healing: "HEALING", blank: "BLANK" }
+      return map[cat] || cat.toUpperCase()
+    }
+
+    function createWatercolorPreview(product) {
+      const [c1, c2] = product.colors
+      return `
+        <div class="watercolor-preview h-56 flex items-center justify-center p-6 relative" style="background: linear-gradient(145deg, ${c1}22 0%, #05070f 45%, ${c2}22 100%);">
+          <div class="absolute rounded-full" style="width: 170px; height: 170px; background: ${c1}; top: 30%; left: 22%; opacity: 0.22; filter: blur(28px);"></div>
+          <div class="absolute rounded-full" style="width: 125px; height: 125px; background: ${c2}; top: 42%; right: 18%; opacity: 0.19; filter: blur(28px);"></div>
+          <div class="relative z-10 w-14 h-14 rounded-full" style="background: linear-gradient(145deg, #e0f2fe, #67e8f9); box-shadow: 0 0 0 7px rgba(255,255,255,0.45), 0 0 0 17px rgba(103,232,249,0.2);"></div>
+          ${product.previewText ? `<div class="absolute bottom-5 left-0 right-0 z-20 text-center px-6"><div class="inline-block bg-white/70 backdrop-blur-sm text-[10px] px-3 py-[1px] rounded font-medium tracking-wider" style="color:#67e8f9">${product.previewText}</div></div>` : ''}
+        </div>
+      `
+    }
+
+    function renderProducts(filteredProducts = products) {
+      const grid = document.getElementById('products-grid')
+      grid.innerHTML = ''
+
+      filteredProducts.forEach(product => {
+        const isWishlisted = wishlist.some(w => w.id === product.id)
+        const card = document.createElement('div')
+        card.className = `product-card rounded-3xl overflow-hidden flex flex-col group`
+        
+        card.innerHTML = `
+          <div class="relative">
+            ${createWatercolorPreview(product)}
+            <button onclick="event.stopImmediatePropagation(); toggleWishlist(${product.id}, this)" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-black/40 backdrop-blur rounded-full text-sm transition hover:scale-110">
+              <i class="fa-solid fa-heart ${isWishlisted ? 'text-[#67e8f9]' : 'text-white/40'}"></i>
+            </button>
+          </div>
+          <div class="p-5 flex-1 flex flex-col">
+            <div>
+              <div class="flex items-center justify-between">
+                <div>
+                  <div class="font-semibold text-[17px] tracking-tight">${product.name}</div>
+                  <div class="uppercase text-[#67e8f9] mt-px text-xs tracking-wider">${getCategoryLabel(product.category)}</div>
+                </div>
+                <div class="font-semibold text-[#67e8f9] text-lg">$${product.price}</div>
+              </div>
+            </div>
+            <div class="flex-1"></div>
+            <div class="flex items-center gap-x-[7px] mt-4">
+              <button onclick="event.stopImmediatePropagation(); quickAddToCart(${product.id})" class="flex-1 text-sm py-[9px] bg-white/10 hover:bg-white/20 active:bg-white/30 transition-colors rounded-3xl font-medium">Add to Cart</button>
+              <button onclick="event.stopImmediatePropagation(); showProductModal(${product.id})" class="px-5 text-sm py-[9px] border border-white/20 hover:bg-white/10 transition-colors rounded-3xl">Details</button>
+            </div>
+          </div>
+        `
+        card.onclick = () => showProductModal(product.id)
+        grid.appendChild(card)
+      })
+    }
+
+    let currentFilter = 'all'
+
+    function filterCards(category, buttonEl) {
+      currentFilter = category
+      document.querySelectorAll('#filter-tabs button').forEach(btn => {
+        btn.classList.remove('active', 'bg-[#67e8f9]', 'text-[#05070f]', 'border-[#67e8f9]')
+        btn.classList.add('border-white/30')
+      })
+      buttonEl.classList.add('active', 'bg-[#67e8f9]', 'text-[#05070f]', 'border-[#67e8f9]')
+      buttonEl.classList.remove('border-white/30')
+
+      const searchVal = document.getElementById('search-input').value.toLowerCase()
+      let filtered = products
+      if (category !== 'all') filtered = filtered.filter(p => p.category === category)
+      if (searchVal) filtered = filtered.filter(p => p.name.toLowerCase().includes(searchVal) || p.desc.toLowerCase().includes(searchVal))
+      renderProducts(filtered)
+    }
+
+    function initSearch() {
+      const input = document.getElementById('search-input')
+      input.addEventListener('input', () => {
+        const val = input.value.toLowerCase().trim()
+        let filtered = products
+        if (currentFilter !== 'all') filtered = filtered.filter(p => p.category === currentFilter)
+        if (val) filtered = filtered.filter(p => p.name.toLowerCase().includes(val) || p.desc.toLowerCase().includes(val))
+        renderProducts(filtered)
+      })
+    }
+
+    let currentProduct = null
+
+    function showProductModal(id) {
+      currentProduct = products.find(p => p.id === id)
+      if (!currentProduct) return
+
+      const modal = document.getElementById('product-modal')
+      const previewContainer = document.getElementById('modal-preview')
+
+      document.getElementById('modal-name').textContent = currentProduct.name
+      document.getElementById('modal-category').textContent = getCategoryLabel(currentProduct.category)
+      document.getElementById('modal-price').innerHTML = `$${currentProduct.price} <span class="text-xs font-normal text-[#67e8f9]">USD</span>`
+      document.getElementById('modal-description').textContent = currentProduct.desc
+      previewContainer.innerHTML = createWatercolorPreview(currentProduct).replace('h-56', 'h-full').replace('p-6', 'p-8')
+
+      const heart = document.getElementById('modal-heart')
+      const isWishlisted = wishlist.some(w => w.id === currentProduct.id)
+      heart.classList.toggle('text-[#67e8f9]', isWishlisted)
+      heart.classList.toggle('text-white/40', !isWishlisted)
+
+      modal.classList.remove('hidden')
+      modal.classList.add('flex')
+    }
+
+    function hideProductModal() {
+      const modal = document.getElementById('product-modal')
+      modal.classList.remove('flex')
+      modal.classList.add('hidden')
+    }
+
+    function toggleWishlistFromModal() {
+      if (!currentProduct) return
+      toggleWishlist(currentProduct.id)
+      const heart = document.getElementById('modal-heart')
+      const isWishlisted = wishlist.some(w => w.id === currentProduct.id)
+      heart.classList.toggle('text-[#67e8f9]', isWishlisted)
+      heart.classList.toggle('text-white/40', !isWishlisted)
+    }
+
+    function quickAddToCart(id) {
+      const product = products.find(p => p.id === id)
+      if (product) addToCart(product)
+    }
+
+    function addCurrentToCart() {
+      if (currentProduct) {
+        addToCart(currentProduct)
+        hideProductModal()
+      }
+    }
+
+    function addToCart(product) {
+      const existing = cart.findIndex(item => item.id === product.id)
+      if (existing > -1) {
+        cart[existing].qty = (cart[existing].qty || 1) + 1
+      } else {
+        cart.push({ ...product, qty: 1 })
+      }
+      updateCartCount()
+      showToast(`Added ${product.name}`)
+    }
+
+    function updateCartCount() {
+      const countEl = document.getElementById('cart-count')
+      const totalItems = cart.reduce((sum, item) => sum + (item.qty || 1), 0)
+      countEl.textContent = totalItems
+    }
+
+    function showCart() {
+      const drawer = document.getElementById('cart-drawer')
+      const itemsContainer = document.getElementById('cart-items')
+      const totalEl = document.getElementById('cart-total')
+
+      drawer.classList.remove('hidden')
+      drawer.classList.add('block')
+
+      if (cart.length === 0) {
+        itemsContainer.innerHTML = `<div class="text-center py-12 text-white/50"><i class="fa-solid fa-shopping-bag text-3xl mb-3"></i><div>Your cart is empty</div></div>`
+        totalEl.textContent = '$0'
+        return
+      }
+
+      let html = ''
+      let total = 0
+      cart.forEach((item, index) => {
+        const qty = item.qty || 1
+        const itemTotal = item.price * qty
+        total += itemTotal
+        html += `
+          <div class="flex gap-x-4">
+            <div class="w-14 h-14 rounded-2xl flex-shrink-0 overflow-hidden border border-white/20" style="background: linear-gradient(145deg, ${item.colors[0]}33 0%, #05070f 50%, ${item.colors[1]}22 100%);"></div>
+            <div class="flex-1 min-w-0">
+              <div class="font-medium">${item.name}</div>
+              <div class="text-xs text-[#67e8f9]">$${item.price} each</div>
+              <div class="flex items-center gap-x-2 mt-1.5">
+                <div class="flex border border-white/20 rounded-xl text-xs">
+                  <button onclick="changeCartQty(${index}, -1)" class="px-2 text-[#67e8f9] hover:bg-white/10 rounded-l-xl">-</button>
+                  <div class="px-2.5 py-px font-mono">${qty}</div>
+                  <button onclick="changeCartQty(${index}, 1)" class="px-2 text-[#67e8f9] hover:bg-white/10 rounded-r-xl">+</button>
+                </div>
+                <button onclick="removeFromCart(${index})" class="text-xs ml-1 text-red-400 hover:text-red-500">Remove</button>
+              </div>
+            </div>
+            <div class="font-medium text-right tabular-nums">$${itemTotal}</div>
+          </div>
+        `
+      })
+      itemsContainer.innerHTML = html
+      totalEl.textContent = `$${total}`
+    }
+
+    function changeCartQty(index, delta) {
+      cart[index].qty = (cart[index].qty || 1) + delta
+      if (cart[index].qty < 1) cart[index].qty = 1
+      showCart()
+      updateCartCount()
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1)
+      showCart()
+      updateCartCount()
+    }
+
+    function hideCart() {
+      const drawer = document.getElementById('cart-drawer')
+      drawer.classList.remove('block')
+      drawer.classList.add('hidden')
+    }
+
+    function checkout() {
+      if (cart.length === 0) return
+      const drawer = document.getElementById('cart-drawer')
+      const total = cart.reduce((sum, i) => sum + (i.price * (i.qty || 1)), 0)
+      drawer.innerHTML = `
+        <div class="absolute right-0 top-0 bottom-0 w-full max-w-md bg-[#05070f] p-8 flex flex-col justify-center text-center border-l border-white/10">
+          <div class="mx-auto w-16 h-16 bg-[#67e8f9] flex items-center justify-center rounded-full mb-6">
+            <i class="fa-solid fa-check text-3xl text-[#05070f]"></i>
+          </div>
+          <div class="text-2xl heading-serif tracking-tight">Thank you.</div>
+          <p class="mt-2 text-[#94a3b8]">Your order has been placed.<br>Your cards are being prepared for instant download.</p>
+          <div class="text-xs bg-white/5 rounded-2xl p-5 mt-8 text-left">
+            <div class="font-medium mb-px">Order #ML-${Date.now().toString().slice(-6)}</div>
+            <div class="text-[#67e8f9]">${cart.length} card${cart.length > 1 ? 's' : ''} • $${total}</div>
+          </div>
+          <button onclick="finishCheckout()" class="mt-8 w-full h-12 bg-[#67e8f9] text-[#05070f] rounded-3xl font-medium">RETURN TO SHOP</button>
+        </div>
+      `
+    }
+
+    function finishCheckout() {
+      cart = []
+      updateCartCount()
+      hideCart()
+      setTimeout(() => location.reload(), 150)
+    }
+
+    function toggleWishlist(id, buttonEl = null) {
+      const idx = wishlist.findIndex(w => w.id === id)
+      const product = products.find(p => p.id === id)
+      if (idx > -1) {
+        wishlist.splice(idx, 1)
+      } else {
+        wishlist.push(product)
+      }
+      document.getElementById('wishlist-count').textContent = wishlist.length
+      const currentSearch = document.getElementById('search-input').value
+      if (currentSearch) {
+        document.getElementById('search-input').dispatchEvent(new Event('input'))
+      } else {
+        let filtered = products
+        if (currentFilter !== 'all') filtered = filtered.filter(p => p.category === currentFilter)
+        renderProducts(filtered)
+      }
+      if (buttonEl) {
+        const icon = buttonEl.querySelector('i')
+        const isNowWishlisted = wishlist.some(w => w.id === id)
+        icon.classList.toggle('text-[#67e8f9]', isNowWishlisted)
+        icon.classList.toggle('text-white/40', !isNowWishlisted)
+      }
+    }
+
+    function showWishlist() {
+      const modal = document.getElementById('wishlist-modal')
+      const container = document.getElementById('wishlist-items')
+      modal.classList.remove('hidden')
+      modal.classList.add('flex')
+
+      if (wishlist.length === 0) {
+        container.innerHTML = `<div class="text-center py-8 text-white/50">Your wishlist is empty.<br><span class="text-xs">Save cards you love for later.</span></div>`
+        return
+      }
+      let html = ''
+      wishlist.forEach((item, index) => {
+        html += `
+          <div class="flex justify-between items-center py-4 border-b border-white/10">
+            <div class="flex gap-x-3">
+              <div class="w-11 h-11 rounded-2xl flex-shrink-0" style="background: linear-gradient(135deg, ${item.colors[0]}33, ${item.colors[1]}22);"></div>
+              <div>
+                <div class="font-medium">${item.name}</div>
+                <div class="text-xs text-[#67e8f9]">$${item.price}</div>
+              </div>
+            </div>
+            <div class="flex gap-x-2 text-sm">
+              <button onclick="addFromWishlist(${index}); event.stopImmediatePropagation()" class="px-3 py-1 border border-white/20 rounded-2xl text-xs">Add</button>
+              <button onclick="removeFromWishlist(${index}); event.stopImmediatePropagation()" class="px-2 text-red-400">×</button>
+            </div>
+          </div>
+        `
+      })
+      container.innerHTML = html
+    }
+
+    function addFromWishlist(index) {
+      const product = wishlist[index]
+      addToCart(product)
+      hideWishlist()
+    }
+
+    function removeFromWishlist(index) {
+      wishlist.splice(index, 1)
+      document.getElementById('wishlist-count').textContent = wishlist.length
+      hideWishlist()
+      const filtered = currentFilter === 'all' ? products : products.filter(p => p.category === currentFilter)
+      renderProducts(filtered)
+    }
+
+    function hideWishlist() {
+      const modal = document.getElementById('wishlist-modal')
+      modal.classList.remove('flex')
+      modal.classList.add('hidden')
+    }
+
+    function handleNewsletter(e) {
+      e.preventDefault()
+      const formContainer = document.getElementById('newsletter-email').parentElement
+      formContainer.innerHTML = `
+        <div class="text-[#67e8f9] py-2 flex items-center justify-center gap-x-2">
+          <i class="fa-solid fa-check"></i> 
+          <span>Thank you. You're on the list.</span>
+        </div>
+      `
+    }
+
+    function showToast(message) {
+      const toast = document.createElement('div')
+      toast.className = `fixed bottom-5 left-1/2 -translate-x-1/2 px-6 py-2.5 text-sm bg-[#67e8f9] text-[#05070f] rounded-3xl shadow flex items-center gap-x-2 z-[100]`
+      toast.innerHTML = `<span>${message}</span>`
+      document.body.appendChild(toast)
+      setTimeout(() => {
+        toast.style.transition = 'all 0.25s ease'
+        toast.style.opacity = '0'
+        setTimeout(() => toast.parentNode.removeChild(toast), 220)
+      }, 1600)
+    }
+
+    function initMobileMenu() {
+      const btn = document.getElementById('mobile-menu-btn')
+      const menu = document.getElementById('mobile-menu')
+      btn.addEventListener('click', () => {
+        menu.classList.toggle('hidden')
+        const icon = btn.querySelector('i')
+        icon.classList.toggle('fa-bars')
+        icon.classList.toggle('fa-times')
+      })
+      menu.querySelectorAll('.mobile-link').forEach(link => {
+        link.addEventListener('click', () => {
+          menu.classList.add('hidden')
+          const icon = btn.querySelector('i')
+          icon.classList.add('fa-bars')
+          icon.classList.remove('fa-times')
+        })
+      })
+    }
+
+    function init() {
+      initMobileMenu()
+      initSearch()
+      renderProducts(products)
+      document.getElementById('wishlist-count').textContent = wishlist.length
+      updateCartCount()
+    }
+
+    window.onload = init
+  </script>
+</body>
+</html>
