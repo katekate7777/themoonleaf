@@ -223,39 +223,29 @@
       </div>
     </div>
   </nav>
-
-  <!-- HERO exactly like the uploaded image: full-screen background, same composition, mysterious dreamy lighting -->
-  <!-- HERO - restored to previous beautiful version -->
-  <header class="hero relative min-h-screen flex items-center justify-center overflow-hidden" style="background-image: url('assets/hero-bg.jpg');">
-    <!-- Vignette for depth -->
+  <!-- HERO - Clean version with online moon image (no water drop) -->
+  <header class="hero relative min-h-screen flex items-center justify-center overflow-hidden" 
+          style="background-image: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&q=85'); background-size: cover; background-position: center;">
+    
+    <!-- Vignette -->
     <div class="absolute inset-0 hero-vignette"></div>
-    <div class="absolute inset-0 bg-gradient-to-b from-black/15 via-transparent to-black/25"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/70"></div>
 
-    <!-- Very subtle floating particles -->
+    <!-- Floating particles -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none z-10">
       <div class="particle" style="width: 2px; height: 2px; left: 15%; top: 48%; animation-duration: 18s;"></div>
       <div class="particle" style="width: 1.5px; height: 1.5px; left: 29%; top: 65%; animation-duration: 22s; animation-delay: -4s;"></div>
       <div class="particle" style="width: 2.5px; height: 2.5px; left: 48%; top: 25%; animation-duration: 16s; animation-delay: -9s;"></div>
-      <div class="particle" style="width: 2px; height: 2px; left: 68%; top: 52%; animation-duration: 20s; animation-delay: -2s;"></div>
-      <div class="particle" style="width: 1.8px; height: 1.8px; left: 82%; top: 38%; animation-duration: 25s; animation-delay: -13s;"></div>
     </div>
 
-    <!-- Gentle leaf breathing/glow overlay -->
-    <div class="absolute z-10 pointer-events-none" style="top: 18%; left: 30%; width: 290px; height: 330px; opacity: 0.85;">
-      <svg class="leaf-breath w-full h-full" viewBox="0 0 56 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M28 6C28 6 14 18 12 35C10 52 20 60 28 54C36 60 46 52 44 35C42 18 28 6 28 6Z" fill="#67e8f9"/>
-        <path d="M28 11C28 11 19 21 18 32" stroke="#a5f3fc" stroke-width="1.8" opacity="0.55"/>
-      </svg>
-    </div>
-
-    <!-- Content - restored to previous positioning -->
+    <!-- Content -->
     <div class="relative z-20 text-center px-6 max-w-4xl mx-auto" style="margin-top: 18vh;">
       <h1 class="hero-title heading-serif text-[#e0f2fe]">
         The Moonleaf
       </h1>
       
       <p class="hero-subtitle mt-4 text-[#e0f2fe] max-w-md mx-auto">
-        stories folded into paper,<br>waiting to be opened
+        stories folded into papers,<br>waiting to be opened
       </p>
 
       <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -271,6 +261,7 @@
       </div>
     </div>
   </header>
+  
 
   <!-- Shop Section -->
   <section id="shop" class="max-w-screen-2xl mx-auto px-8 pt-16 pb-12">
