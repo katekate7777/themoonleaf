@@ -139,15 +139,19 @@
       100% { transform: translateY(-140px); opacity: 0; }
     }
 
-    /* Gentle leaf breathing animation overlay */
+        /* Gentle leaf swaying animation - like breathing in the wind */
     .leaf-breath {
-      animation: breath 7.5s ease-in-out infinite;
-      filter: drop-shadow(0 0 12px rgba(103, 232, 249, 0.5));
+      animation: leaf-sway 14s ease-in-out infinite;
+      filter: drop-shadow(0 0 18px rgba(103, 232, 249, 0.55));
     }
 
-    @keyframes breath {
-      0%, 100% { transform: scale(1) rotate(-1deg); }
-      50% { transform: scale(1.012) rotate(1deg); }
+    @keyframes leaf-sway {
+      0%, 100% { 
+        transform: scale(1) rotate(-4deg) translateY(0); 
+      }
+      50% { 
+        transform: scale(1.035) rotate(4deg) translateY(-8px); 
+      }
     }
 
     .gentle-leaf {
