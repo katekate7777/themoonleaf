@@ -510,16 +510,28 @@
     }
 
     function createWatercolorPreview(product) {
-      const [c1, c2] = product.colors
-      return `
-        <div class="watercolor-preview h-56 flex items-center justify-center p-6 relative" style="background: linear-gradient(145deg, ${c1}22 0%, #05070f 45%, ${c2}22 100%);">
-          <div class="absolute rounded-full" style="width: 170px; height: 170px; background: ${c1}; top: 30%; left: 22%; opacity: 0.22; filter: blur(28px);"></div>
-          <div class="absolute rounded-full" style="width: 125px; height: 125px; background: ${c2}; top: 42%; right: 18%; opacity: 0.19; filter: blur(28px);"></div>
-          <div class="relative z-10 w-14 h-14 rounded-full" style="background: linear-gradient(145deg, #e0f2fe, #67e8f9); box-shadow: 0 0 0 7px rgba(255,255,255,0.45), 0 0 0 17px rgba(103,232,249,0.2);"></div>
-          ${product.previewText ? `<div class="absolute bottom-5 left-0 right-0 z-20 text-center px-6"><div class="inline-block bg-white/70 backdrop-blur-sm text-[10px] px-3 py-[1px] rounded font-medium tracking-wider" style="color:#67e8f9">${product.previewText}</div></div>` : ''}
-        </div>
-      `
-    }
+  if (product.image) {
+    // 使用真实上传的图片
+    return `
+      <div class="watercolor-preview h-56 flex items-center justify-center p-4 relative overflow-hidden">
+        <img src="${product.image}" 
+             class="w-full h-full object-cover rounded-2xl shadow-inner" 
+             alt="${product.name}">
+      </div>
+    `;
+  }
+  
+  // 没有真实图片时使用原来的渐变占位
+  const [c1, c2] = product.colors;
+  return `
+    <div class="watercolor-preview h-56 flex items-center justify-center p-6 relative" style="background: linear-gradient(145deg, ${c1}22 0%, #05070f 45%, ${c2}22 100%);">
+      <div class="absolute rounded-full" style="width: 170px; height: 170px; background: ${c1}; top: 30%; left: 22%; opacity: 0.22; filter: blur(28px);"></div>
+      <div class="absolute rounded-full" style="width: 125px; height: 125px; background: ${c2}; top: 42%; right: 18%; opacity: 0.19; filter: blur(28px);"></div>
+      <div class="relative z-10 w-14 h-14 rounded-full" style="background: linear-gradient(145deg, #e0f2fe, #67e8f9); box-shadow: 0 0 0 7px rgba(255,255,255,0.45), 0 0 0 17px rgba(103,232,249,0.2);"></div>
+      ${product.previewText ? `<div class="absolute bottom-5 left-0 right-0 z-20 text-center px-6"><div class="inline-block bg-white/70 backdrop-blur-sm text-[10px] px-3 py-[1px] rounded font-medium tracking-wider" style="color:#67e8f9">${product.previewText}</div></div>` : ''}
+    </div>
+  `;
+}
 
     function renderProducts(filteredProducts = products) {
       const grid = document.getElementById('products-grid')
